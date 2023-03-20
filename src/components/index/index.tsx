@@ -1,10 +1,10 @@
+import { useState } from 'react';
 import { Menu, Disclosure, Transition } from '@headlessui/react';
 import {
   CheckBadgeIcon,
   RectangleStackIcon,
   BarsArrowUpIcon,
   ChevronDownIcon,
-  EnvelopeIcon,
   CheckCircleIcon,
   ChevronRightIcon,
   MagnifyingGlassIcon,
@@ -17,6 +17,8 @@ import { Fragment } from 'react';
 import Image from 'next/image';
 import { signOut, useSession } from 'next-auth/react';
 import { api } from '~/utils/api';
+import { Dialog } from '@headlessui/react';
+import { Bars3Icon } from '@heroicons/react/24/outline';
 
 const navigation = [
   { name: 'Dashboard', href: '#', current: true },
@@ -189,15 +191,73 @@ export function ProfileSection() {
             <div className="space-y-8 sm:flex sm:items-center sm:justify-between sm:space-y-0 xl:block xl:space-y-8">
               {/* Profile */}
               <div className="flex items-center space-x-3">
-                <div className="h-12 w-12 flex-shrink-0">
-                  <Image
-                    className="h-12 w-12 rounded-full"
-                    src={sessionData?.user.image ?? ''}
-                    alt=""
-                    height={48}
-                    width={48}
-                  />
-                </div>
+                <Menu as="div" className="relative ml-4 flex-shrink-0">
+                  <div>
+                    <Menu.Button className="flex rounded-full bg-azure-radiance-700 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-azure-radiance-700">
+                      <span className="sr-only">Open user menu</span>
+                      <Image
+                        className="h-12 w-12 rounded-full"
+                        src={sessionData?.user.image ?? ''}
+                        alt=""
+                        height={48}
+                        width={48}
+                      />
+                    </Menu.Button>
+                  </div>
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <Menu.Item key={'Profile'}>
+                        {({ active }) => (
+                          <a
+                            className={classNames(
+                              active ? 'bg-gray-100' : '',
+                              'block px-4 py-2 text-sm text-gray-700',
+                            )}
+                          >
+                            {'Profile'}
+                          </a>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item key={'Settings'}>
+                        {({ active }) => (
+                          <a
+                            className={classNames(
+                              active ? 'bg-gray-100' : '',
+                              'block px-4 py-2 text-sm text-gray-700',
+                            )}
+                          >
+                            {'Settings'}
+                          </a>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item key={'profile'}>
+                        {({ active }) => (
+                          <a
+                            href={`/api/auth/signout`}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              signOut();
+                            }}
+                            className={classNames(
+                              active ? 'bg-gray-100' : '',
+                              'block px-4 py-2 text-sm text-gray-700',
+                            )}
+                          >
+                            Sign Out
+                          </a>
+                        )}
+                      </Menu.Item>
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
                 <div className="space-y-1">
                   <div className="text-sm font-medium text-gray-900">{sessionData?.user.name}</div>
                 </div>
@@ -235,14 +295,8 @@ export function ProfileSection() {
 export function MessageList() {
   const messages = api.messages.getAll.useQuery().data;
 
-  console.log(
-    '%cindex.tsx line:237 messages',
-    'color: white; background-color: #007acc;',
-    messages,
-  );
-
   return (
-    <div className="bg-white lg:min-w-0 lg:flex-1">
+    <div className="bg-white lg:min-w-0 lg:flex-1 lg:overflow-y-scroll">
       <div className="border-b border-t border-gray-200 pl-4 pr-6 pt-4 pb-4 sm:pl-6 lg:pl-8 xl:border-t-0 xl:pl-6 xl:pt-6">
         <div className="flex items-center">
           <h1 className="flex-1 text-lg font-medium">Scheduled Messages</h1>
@@ -298,7 +352,7 @@ export function MessageList() {
           </Menu>
         </div>
       </div>
-      <div className="overflow-hidden bg-white shadow sm:rounded-md">
+      <div className="overflow-y-scroll bg-white shadow sm:rounded-md">
         <ul role="list" className="divide-y divide-gray-200">
           {messages?.map((message) => (
             <li key={message.recipient_name}>
@@ -357,180 +411,168 @@ export function MessageList() {
 }
 
 export function Navbar() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { data: sessionData } = useSession();
 
   return (
-    <Disclosure as="nav" className="flex-shrink-0 bg-azure-radiance-900">
-      {({ open }) => (
-        <>
-          <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
-            <div className="relative flex h-16 items-center justify-between">
-              {/* Logo section */}
-              <div className="flex items-center px-2 lg:px-0 xl:w-64">
-                <div className="flex-shrink-0">
-                  <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=white"
-                    alt="Your Company"
-                  />
-                </div>
-              </div>
-
-              {/* Search section */}
-              <div className="flex flex-1 justify-center lg:justify-end">
-                <div className="w-full px-2 lg:px-6">
-                  <label htmlFor="search" className="sr-only">
-                    Search messages
-                  </label>
-                  <div className="relative text-azure-radiance-200 focus-within:text-gray-400">
-                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                      <MagnifyingGlassIcon className="h-5 w-5" aria-hidden="true" />
-                    </div>
-                    <input
-                      id="search"
-                      name="search"
-                      className="block w-full rounded-md border-0 bg-azure-radiance-400 bg-opacity-25 py-1.5 pl-10 pr-3 text-azure-radiance-100 placeholder:text-azure-radiance-200 focus:bg-white focus:text-gray-900 focus:outline-none focus:ring-0 focus:placeholder:text-gray-400 sm:text-sm sm:leading-6"
-                      placeholder="Search messages"
-                      type="search"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="flex lg:hidden">
-                {/* Mobile menu button */}
-                <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-azure-radiance-600 p-2 text-azure-radiance-400 hover:bg-azure-radiance-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-azure-radiance-600">
-                  <span className="sr-only">Open main menu</span>
-                  {open ? (
-                    <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
-                  ) : (
-                    <Bars3CenterLeftIcon className="block h-6 w-6" aria-hidden="true" />
-                  )}
-                </Disclosure.Button>
-              </div>
-              {/* Links section */}
-              <div className="hidden lg:block lg:w-80">
-                <div className="flex items-center justify-end">
-                  <div className="flex">
-                    {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className="rounded-md px-3 py-2 text-sm font-medium text-azure-radiance-200 hover:text-white"
-                        aria-current={item.current ? 'page' : undefined}
-                      >
-                        {item.name}
-                      </a>
-                    ))}
-                  </div>
-                  {/* Profile dropdown */}
-                  <Menu as="div" className="relative ml-4 flex-shrink-0">
-                    <div>
-                      <Menu.Button className="flex rounded-full bg-azure-radiance-700 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-azure-radiance-700">
-                        <span className="sr-only">Open user menu</span>
-                        <Image
-                          className="h-8 w-8 rounded-full"
-                          src={sessionData?.user.image ?? ''}
-                          alt=""
-                          height={32}
-                          width={32}
-                        />
-                      </Menu.Button>
-                    </div>
-                    <Transition
-                      as={Fragment}
-                      enter="transition ease-out duration-100"
-                      enterFrom="transform opacity-0 scale-95"
-                      enterTo="transform opacity-100 scale-100"
-                      leave="transition ease-in duration-75"
-                      leaveFrom="transform opacity-100 scale-100"
-                      leaveTo="transform opacity-0 scale-95"
+    <header className="bg-white">
+      <nav
+        className="mx-auto flex w-full items-center justify-between gap-x-6 border-b border-gray-200 p-6 lg:px-8"
+        aria-label="Global"
+      >
+        <div className="flex lg:flex-1">
+          <a href="#" className="-m-1.5 p-1.5">
+            <span className="sr-only">Your Company</span>
+            <img
+              className="h-8 w-auto"
+              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+              alt=""
+            />
+          </a>
+        </div>
+        <div className="hidden lg:flex lg:gap-x-12">
+          {navigation.map((item) => (
+            <a
+              key={item.name}
+              href={item.href}
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              {item.name}
+            </a>
+          ))}
+        </div>
+        <div className="flex flex-1 items-center justify-end gap-x-6">
+          <Menu as="div" className="relative ml-4 flex-shrink-0">
+            <div>
+              <Menu.Button className="flex rounded-full bg-azure-radiance-700 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-azure-radiance-700">
+                <span className="sr-only">Open user menu</span>
+                <Image
+                  className="h-8 w-8 rounded-full"
+                  src={sessionData?.user.image ?? ''}
+                  alt=""
+                  height={32}
+                  width={32}
+                />
+              </Menu.Button>
+            </div>
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-100"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
+            >
+              <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Menu.Item key={'Profile'}>
+                  {({ active }) => (
+                    <a
+                      className={classNames(
+                        active ? 'bg-gray-100' : '',
+                        'block px-4 py-2 text-sm text-gray-700',
+                      )}
                     >
-                      <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        <Menu.Item key={'Profile'}>
-                          {({ active }) => (
-                            <a
-                              className={classNames(
-                                active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm text-gray-700',
-                              )}
-                            >
-                              {'Profile'}
-                            </a>
-                          )}
-                        </Menu.Item>
-                        <Menu.Item key={'Settings'}>
-                          {({ active }) => (
-                            <a
-                              className={classNames(
-                                active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm text-gray-700',
-                              )}
-                            >
-                              {'Settings'}
-                            </a>
-                          )}
-                        </Menu.Item>
-                        <Menu.Item key={'profile'}>
-                          {({ active }) => (
-                            <a
-                              href={`/api/auth/signout`}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                signOut();
-                              }}
-                              className={classNames(
-                                active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm text-gray-700',
-                              )}
-                            >
-                              Sign Out
-                            </a>
-                          )}
-                        </Menu.Item>
-                      </Menu.Items>
-                    </Transition>
-                  </Menu>
-                </div>
+                      {'Profile'}
+                    </a>
+                  )}
+                </Menu.Item>
+                <Menu.Item key={'Settings'}>
+                  {({ active }) => (
+                    <a
+                      className={classNames(
+                        active ? 'bg-gray-100' : '',
+                        'block px-4 py-2 text-sm text-gray-700',
+                      )}
+                    >
+                      {'Settings'}
+                    </a>
+                  )}
+                </Menu.Item>
+                <Menu.Item key={'profile'}>
+                  {({ active }) => (
+                    <a
+                      href={`/api/auth/signout`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        signOut();
+                      }}
+                      className={classNames(
+                        active ? 'bg-gray-100' : '',
+                        'block px-4 py-2 text-sm text-gray-700',
+                      )}
+                    >
+                      Sign Out
+                    </a>
+                  )}
+                </Menu.Item>
+              </Menu.Items>
+            </Transition>
+          </Menu>
+        </div>
+        <div className="flex lg:hidden">
+          <button
+            type="button"
+            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+            onClick={() => setMobileMenuOpen(true)}
+          >
+            <span className="sr-only">Open main menu</span>
+            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+          </button>
+        </div>
+      </nav>
+      <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
+        <div className="fixed inset-0 z-10" />
+        <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+          <div className="flex items-center gap-x-6">
+            <a href="#" className="-m-1.5 p-1.5">
+              <span className="sr-only">Your Company</span>
+              <img
+                className="h-8 w-auto"
+                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                alt=""
+              />
+            </a>
+            <a
+              href="#"
+              className="ml-auto rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Sign up
+            </a>
+            <button
+              type="button"
+              className="-m-2.5 rounded-md p-2.5 text-gray-700"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <span className="sr-only">Close menu</span>
+              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+            </button>
+          </div>
+          <div className="mt-6 flow-root">
+            <div className="-my-6 divide-y divide-gray-500/10">
+              <div className="space-y-2 py-6">
+                {navigation.map((item) => (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                  >
+                    {item.name}
+                  </a>
+                ))}
+              </div>
+              <div className="py-6">
+                <a
+                  href="#"
+                  className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                >
+                  Log in
+                </a>
               </div>
             </div>
           </div>
-
-          <Disclosure.Panel className="lg:hidden">
-            <div className="space-y-1 px-2 pt-2 pb-3">
-              {navigation.map((item) => (
-                <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className={classNames(
-                    item.current
-                      ? 'bg-azure-radiance-800 text-white'
-                      : 'text-azure-radiance-200 hover:bg-azure-radiance-600 hover:text-azure-radiance-100',
-                    'block rounded-md px-3 py-2 text-base font-medium',
-                  )}
-                  aria-current={item.current ? 'page' : undefined}
-                >
-                  {item.name}
-                </Disclosure.Button>
-              ))}
-            </div>
-            <div className="border-t border-azure-radiance-800 pt-4 pb-3">
-              <div className="space-y-1 px-2">
-                {userNavigation.map((item) => (
-                  <Disclosure.Button
-                    key={item.name}
-                    as="a"
-                    href={item.href}
-                    className="block rounded-md px-3 py-2 text-base font-medium text-azure-radiance-200 hover:bg-azure-radiance-600 hover:text-azure-radiance-100"
-                  >
-                    {item.name}
-                  </Disclosure.Button>
-                ))}
-              </div>
-            </div>
-          </Disclosure.Panel>
-        </>
-      )}
-    </Disclosure>
+        </Dialog.Panel>
+      </Dialog>
+    </header>
   );
 }

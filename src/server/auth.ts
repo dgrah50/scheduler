@@ -35,7 +35,12 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     session({ session, user }) {
       if (session.user) {
-        session.user.id = user.id;
+        console.log(
+          '%cauth.ts line:38 session.user',
+          'color: white; background-color: #007acc;',
+          session.user,
+        );
+        // session.user.id = user.id;
         // session.user.role = user.role; <-- put other properties on the session here
       }
       return session;
@@ -59,6 +64,11 @@ export const authOptions: NextAuthOptions = {
   ],
   pages: {
     signIn: '/auth/signin',
+  },
+  session: {
+    strategy: 'jwt',
+    maxAge: 60 * 60 * 24 * 30,
+    updateAge: 24 * 60 * 60, // 24 hours
   },
 };
 

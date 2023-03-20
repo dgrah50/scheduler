@@ -1,9 +1,20 @@
 import { InferGetServerSidePropsType } from 'next';
 import { CtxOrReq } from 'next-auth/client/_utils';
-import { signIn, getCsrfToken, getProviders, getSession } from 'next-auth/react';
+import { signIn, getCsrfToken, getProviders, getSession, useSession } from 'next-auth/react';
 import { Discord } from 'iconoir-react';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 function Signin({ csrfToken, providers }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const router = useRouter();
+  const { status } = useSession();
+
+  useEffect(() => {
+    console.log('%csignin.tsx line:13 status', 'color: white; background-color: #007acc;', status);
+    if (status === 'authenticated') {
+      void router.push('/');
+    }
+  }, [status]);
   return (
     <>
       <div className="flex min-h-full">
@@ -36,7 +47,7 @@ function Signin({ csrfToken, providers }: InferGetServerSidePropsType<typeof get
                       Object.values(providers).map((provider) => (
                         <div key={provider.name}>
                           <button
-                            onClick={() => signIn(provider.id)}
+                            onClick={() => signIn(provider.id, { callbackUrl: `/` })}
                             className="inline-flex w-full justify-center rounded-md bg-white py-2 px-3 text-gray-500 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0"
                           >
                             <Discord />
@@ -152,11 +163,11 @@ export async function getServerSideProps(context: CtxOrReq) {
 
   const session = await getSession({ req });
 
-  if (session) {
-    return {
-      redirect: { destination: '/' },
-    };
-  }
+  // if (session) {
+  //   return {
+  //     redirect: { destination: '/' },
+  //   };
+  // }
 
   return {
     props: {
