@@ -1,7 +1,6 @@
-import { useSession } from 'next-auth/react';
 import { ProfileSection, MessageList, ActivityFeed } from '~/components/index';
 
-export default function Home(props) {
+export default function Home() {
   return (
     <>
       {/* Background color split screen for large screens */}
