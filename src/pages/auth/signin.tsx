@@ -1,7 +1,7 @@
 import { InferGetServerSidePropsType } from 'next';
 import { CtxOrReq } from 'next-auth/client/_utils';
 import { signIn, getCsrfToken, getProviders, getSession, useSession } from 'next-auth/react';
-import { Discord } from 'iconoir-react';
+// import { Discord } from 'iconoir-react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -50,7 +50,8 @@ function Signin({ csrfToken, providers }: InferGetServerSidePropsType<typeof get
                             onClick={() => signIn(provider.id, { callbackUrl: `/` })}
                             className="inline-flex w-full justify-center rounded-md bg-white py-2 px-3 text-gray-500 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0"
                           >
-                            <Discord />
+                            DISCORD
+                            {/* <Discord /> */}
                             <span className="sr-only">Sign in with Discord</span>
                           </button>
                         </div>
