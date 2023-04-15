@@ -1,9 +1,11 @@
 import { Fragment, useContext, useState } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
-import { CalendarIcon, TagIcon } from '@heroicons/react/20/solid';
+import { CalendarIcon } from '@heroicons/react/20/solid';
 import classNames from 'classnames';
 import { Person } from '.';
 import { MessageComposerContext, ModalStateEnum } from './context';
+import { api } from '~/utils/api';
+import { useModalStore } from '~/store/store';
 
 const dueDates: DueDate[] = [
   { name: 'No due date', value: null },
@@ -21,6 +23,28 @@ interface MessageBoxProps {
 export default function MessageBox({ selectedPerson }: MessageBoxProps) {
   const [dated, setDated] = useState<DueDate>(dueDates[0] as DueDate);
   const { setModalState } = useContext(MessageComposerContext);
+  const { toggleModal } = useModalStore();
+  const [message, setMessage] = useState<string>('');
+  const utils = api.useContext();
+
+  const addMessage = api.messages.addMessage.useMutation({
+    async onSuccess() {
+      utils.messages.getAll.invalidate();
+      toggleModal();
+      setModalState(ModalStateEnum.ContactList);
+      console.log('success');
+    },
+  });
+
+  async function sendMessage() {
+    addMessage.mutateAsync({
+      channel: 'WhatsApp',
+      message: message,
+      recipient: selectedPerson.name,
+      recipient_number: selectedPerson.phone,
+      userId: 1,
+    });
+  }
 
   return (
     <>
@@ -59,7 +83,8 @@ export default function MessageBox({ selectedPerson }: MessageBoxProps) {
           id="message"
           className="block w-full resize-none border-0 py-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
           placeholder={`Happy birthday, ${selectedPerson.name.split(' ')[0]}!`}
-          defaultValue={''}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
         />
 
         {/* Spacer element to match the height of the toolbar */}
@@ -137,7 +162,9 @@ export default function MessageBox({ selectedPerson }: MessageBoxProps) {
         <div className="flex items-center justify-end space-x-3 border-t border-gray-200 px-2 py-2 sm:px-3">
           <div className="flex-shrink-0">
             <button
-              type="submit"
+              onClick={() => {
+                sendMessage();
+              }}
               className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 "
             >
               Create
