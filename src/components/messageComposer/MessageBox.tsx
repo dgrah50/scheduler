@@ -2,10 +2,8 @@ import { Fragment, useContext, useState } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CalendarIcon } from '@heroicons/react/20/solid';
 import classNames from 'classnames';
-import { Person } from '.';
-import { MessageComposerContext, ModalStateEnum } from './context';
 import { api } from '~/utils/api';
-import { useModalStore } from '~/store/store';
+import { ModalStateEnum, Person, useModalStore } from '~/store/store';
 
 const dueDates: DueDate[] = [
   { name: 'No due date', value: null },
@@ -18,21 +16,19 @@ interface DueDate {
 
 interface MessageBoxProps {
   selectedPerson: Person;
+  defaultMessageValue?: string;
 }
 
-export default function MessageBox({ selectedPerson }: MessageBoxProps) {
+export default function MessageBox({ selectedPerson, defaultMessageValue }: MessageBoxProps) {
   const [dated, setDated] = useState<DueDate>(dueDates[0] as DueDate);
-  const { setModalState } = useContext(MessageComposerContext);
-  const { toggleModal } = useModalStore();
-  const [message, setMessage] = useState<string>('');
+  const { setModalState } = useModalStore();
+  const [message, setMessage] = useState<string>(defaultMessageValue ?? '');
   const utils = api.useContext();
 
   const addMessage = api.messages.addMessage.useMutation({
     async onSuccess() {
       utils.messages.getAll.invalidate();
-      toggleModal();
       setModalState(ModalStateEnum.ContactList);
-      console.log('success');
     },
   });
 

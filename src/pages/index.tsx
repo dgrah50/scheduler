@@ -2,7 +2,6 @@ import { ActivityFeed } from '~/components/index/ActivityFeed';
 import { ProfileSection } from '~/components/index/ProfileSection';
 import { MessageList } from '~/components/index/MessageList';
 import { MessageComposer } from '~/components/messageComposer';
-import { MessageComposerContextProvider } from '~/components/messageComposer/context';
 
 export default function Home() {
   return (
@@ -16,9 +15,7 @@ export default function Home() {
           <div className="min-w-0 flex-1 bg-white lg:h-screen xl:flex">
             <ProfileSection />
             <MessageList />
-            <MessageComposerContextProvider>
-              <MessageComposer />
-            </MessageComposerContextProvider>
+            <MessageComposer />
           </div>
           <ActivityFeed />
         </div>

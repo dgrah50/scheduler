@@ -5,12 +5,12 @@ import { Fragment } from 'react';
 import Image from 'next/image';
 import { signOut, useSession } from 'next-auth/react';
 import { api } from '~/utils/api';
-import { useModalStore } from '~/store/store';
+import { ModalStateEnum, useModalStore } from '~/store/store';
 
 export function ProfileSection() {
   const { data: sessionData } = useSession();
   const messages = api.messages.getAll.useQuery().data ?? [];
-  const { isModalOpen, toggleModal } = useModalStore();
+  const { setModalState, toggleModal } = useModalStore();
 
   return (
     <div className="bg-white xl:w-64 xl:flex-shrink-0 xl:border-r xl:border-gray-200">
@@ -94,7 +94,10 @@ export function ProfileSection() {
               {/* Action buttons */}
               <div className="flex flex-col sm:flex-row xl:flex-col">
                 <button
-                  onClick={toggleModal}
+                  onClick={() => {
+                    toggleModal();
+                    setModalState(ModalStateEnum.MessageBox);
+                  }}
                   type="button"
                   className="inline-flex items-center justify-center rounded-md bg-indigo-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-azure-radiance-600 xl:w-full"
                 >

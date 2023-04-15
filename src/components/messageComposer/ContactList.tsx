@@ -1,4 +1,4 @@
-import { SetStateAction } from 'react';
+import { useState } from 'react';
 import { Combobox } from '@headlessui/react';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import { UsersIcon } from '@heroicons/react/24/outline';
@@ -7,21 +7,16 @@ import classNames from 'classnames';
 import { Person, isPerson } from './index';
 import { recent, people } from './mockData';
 
-export function ContactList(
-  setQuery: { (value: SetStateAction<string>): void; (arg0: string): void },
-  onPersonClick: (value: Person) => void,
-  filteredPeople: {
-    id: number;
-    name: string;
-    phone: string;
-    email: string;
-    role: string;
-    url: string;
-    profileUrl: string;
-    imageUrl: string;
-  }[],
-  query: string,
-) {
+interface ContactListProps {
+  onPersonClick: (value: Person) => void;
+}
+export function ContactList({ onPersonClick }: ContactListProps) {
+  const [query, setQuery] = useState('');
+
+  const filteredPeople = people.filter((person) => {
+    return person.name.toLowerCase().includes(query.toLowerCase());
+  });
+
   return (
     <Combobox<Person>>
       {({ activeOption }) => (
@@ -110,6 +105,7 @@ export function ContactList(
                                   active && 'bg-gray-100 text-gray-900',
                                 )
                               }
+                              onClick={(e) => onPersonClick(person)}
                             >
                               {({ active }) => (
                                 <>

@@ -2,30 +2,25 @@ import { Fragment, useContext, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import MessageBox from './MessageBox';
 import { ContactList } from './ContactList';
-import { people } from './mockData';
-import { MessageComposerContext, ModalStateEnum } from './context';
-import { useModalStore } from '~/store/store';
+import { ModalStateEnum, Person, useModalStore } from '~/store/store';
 
 export function MessageComposer() {
-  const [query, setQuery] = useState('');
-  const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
-
-  const { isModalOpen, toggleModal } = useModalStore();
-
-  const { modalState, setModalState } = useContext(MessageComposerContext);
-
-  const filteredPeople = people.filter((person) => {
-    return person.name.toLowerCase().includes(query.toLowerCase());
-  });
+  const { isModalOpen, setModalState, toggleModal, modalState, selectedPerson, setSelectedPerson } =
+    useModalStore();
 
   const onPersonClick = (person: Person) => {
     setSelectedPerson(person);
     setModalState(ModalStateEnum.MessageBox);
   };
 
+  const onClose = () => {
+    toggleModal();
+    setTimeout(() => setSelectedPerson(null), 500);
+  };
+
   return (
-    <Transition.Root show={isModalOpen} as={Fragment} afterLeave={() => setQuery('')} appear>
-      <Dialog as="div" className="relative z-10" onClose={toggleModal}>
+    <Transition.Root show={isModalOpen} as={Fragment} appear>
+      <Dialog as="div" className="relative z-10" onClose={onClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -52,7 +47,7 @@ export function MessageComposer() {
               {modalState === ModalStateEnum.MessageBox && selectedPerson ? (
                 <MessageBox selectedPerson={selectedPerson} />
               ) : (
-                ContactList(setQuery, onPersonClick, filteredPeople, query)
+                <ContactList onPersonClick={onPersonClick} />
               )}
             </Dialog.Panel>
           </Transition.Child>
@@ -62,16 +57,6 @@ export function MessageComposer() {
   );
 }
 
-export interface Person {
-  id: number;
-  name: string;
-  phone: string;
-  email: string;
-  role: string;
-  url: string;
-  profileUrl: string;
-  imageUrl: string;
-}
 export const isPerson = (item: Person | undefined): item is Person => {
   return !!item;
 };

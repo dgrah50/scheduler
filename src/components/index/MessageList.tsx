@@ -7,10 +7,14 @@ import {
   PhoneIcon,
 } from '@heroicons/react/20/solid';
 import classNames from 'classnames';
+import { number } from 'zod';
+import { ModalStateEnum, useModalStore } from '~/store/store';
 import { api } from '~/utils/api';
 
 export function MessageList() {
   const messages = api.messages.getAll.useQuery().data;
+
+  const { setModalState, toggleModal, setSelectedPerson } = useModalStore();
 
   return (
     <div className="bg-white lg:min-w-0 lg:flex-1 lg:overflow-y-scroll">
@@ -72,53 +76,67 @@ export function MessageList() {
       <div className="overflow-y-scroll bg-white shadow sm:rounded-md">
         <ul role="list" className="divide-y divide-gray-200">
           {messages?.map((message) => (
-            <li key={message.recipient_name}>
-              <a href={'google.com'} className="block hover:bg-gray-50">
-                <div className="flex items-center px-4 py-4 sm:px-6">
-                  <div className="flex min-w-0 flex-1 items-center">
-                    <div className="flex-shrink-0">
-                      {/* <Image
+            <li
+              key={message.recipient_name}
+              onClick={() => {
+                setSelectedPerson({
+                  id: 1,
+                  name: message.recipient_name ?? '', //TODO : Ensure name here
+                  phone: 'stringnumber',
+                  email: 'stringnumber',
+                  role: 'stringnumber',
+                  url: 'stringnumber',
+                  profileUrl: 'stringnumber',
+                  imageUrl: 'stringnumber',
+                });
+                setModalState(ModalStateEnum.MessageBox);
+                toggleModal();
+              }}
+            >
+              <div className="flex items-center px-4 py-4 sm:px-6">
+                <div className="flex min-w-0 flex-1 items-center">
+                  <div className="flex-shrink-0">
+                    {/* <Image
                       className="h-12 w-12 rounded-full"
                       src={message.applicant.imageUrl}
                       alt=""
                       height={48}
                       width={48}
                     /> */}
+                  </div>
+                  <div className="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
+                    <div>
+                      <p className="truncate text-sm font-medium text-indigo-800">
+                        {message.recipient_name}
+                      </p>
+                      <p className="mt-2 flex items-center text-sm text-gray-500">
+                        <PhoneIcon
+                          className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                          aria-hidden="true"
+                        />
+                        <span className="truncate">{message.recipient_number}</span>
+                      </p>
                     </div>
-                    <div className="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
+                    <div className="hidden md:block">
                       <div>
-                        <p className="truncate text-sm font-medium text-indigo-800">
-                          {message.recipient_name}
+                        <p className="text-sm text-gray-900">
+                          Birthday on {message.send_timestamp}
                         </p>
                         <p className="mt-2 flex items-center text-sm text-gray-500">
-                          <PhoneIcon
-                            className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                          <CheckCircleIcon
+                            className="mr-1.5 h-5 w-5 flex-shrink-0 text-green-400"
                             aria-hidden="true"
                           />
-                          <span className="truncate">{message.recipient_number}</span>
+                          {message.channel}
                         </p>
-                      </div>
-                      <div className="hidden md:block">
-                        <div>
-                          <p className="text-sm text-gray-900">
-                            Birthday on {message.send_timestamp}
-                          </p>
-                          <p className="mt-2 flex items-center text-sm text-gray-500">
-                            <CheckCircleIcon
-                              className="mr-1.5 h-5 w-5 flex-shrink-0 text-green-400"
-                              aria-hidden="true"
-                            />
-                            {message.channel}
-                          </p>
-                        </div>
                       </div>
                     </div>
                   </div>
-                  <div>
-                    <ChevronRightIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                  </div>
                 </div>
-              </a>
+                <div>
+                  <ChevronRightIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                </div>
+              </div>
             </li>
           ))}
         </ul>
