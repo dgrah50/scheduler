@@ -48,7 +48,7 @@ export function MessageComposer() {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <Dialog.Panel className="mx-auto max-w-3xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all">
+            <Dialog.Panel className="mx-auto max-w-3xl transform rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all">
               {modalState === ModalStateEnum.MessageBox && selectedPerson ? (
                 <MessageBox selectedPerson={selectedPerson} />
               ) : (

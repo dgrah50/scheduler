@@ -5,14 +5,6 @@ import classNames from 'classnames';
 import { Person } from '.';
 import { MessageComposerContext, ModalStateEnum } from './context';
 
-const labels: Label[] = [
-  { name: 'Unlabelled', value: null },
-  { name: 'Engineering', value: 'engineering' },
-];
-interface Label {
-  name: string;
-  value: string | null;
-}
 const dueDates: DueDate[] = [
   { name: 'No due date', value: null },
   { name: 'Today', value: 'today' },
@@ -27,12 +19,11 @@ interface MessageBoxProps {
 }
 
 export default function MessageBox({ selectedPerson }: MessageBoxProps) {
-  const [labelled, setLabelled] = useState<Label>(labels[0] as Label);
   const [dated, setDated] = useState<DueDate>(dueDates[0] as DueDate);
   const { setModalState } = useContext(MessageComposerContext);
 
   return (
-    <form action="#" className="relative">
+    <>
       <div className="overflow-hidden rounded-lg border border-gray-300 shadow-sm">
         <div className="flex items-center justify-between space-x-3 border-t border-gray-200 px-2 py-2 sm:px-3">
           <div className="flex">
@@ -50,24 +41,24 @@ export default function MessageBox({ selectedPerson }: MessageBoxProps) {
           </div>
         </div>
         <label htmlFor="title" className="sr-only">
-          Title
+          {`Schedule a birthday message for ${selectedPerson.name.split(' ')[0]}!`}
         </label>
         <input
           type="text"
           name="title"
           id="title"
           className="block w-full border-0 pt-2.5 text-lg font-medium placeholder:text-gray-400 focus:ring-0"
-          placeholder="Title"
+          placeholder={`Schedule a birthday message for ${selectedPerson.name.split(' ')[0]}!`}
         />
-        <label htmlFor="description" className="sr-only">
-          Description
+        <label htmlFor="message" className="sr-only">
+          Message
         </label>
         <textarea
           rows={2}
-          name="description"
-          id="description"
+          name="message"
+          id="message"
           className="block w-full resize-none border-0 py-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-          placeholder="Write a description..."
+          placeholder={`Happy birthday, ${selectedPerson.name.split(' ')[0]}!`}
           defaultValue={''}
         />
 
@@ -88,60 +79,6 @@ export default function MessageBox({ selectedPerson }: MessageBoxProps) {
       <div className="absolute inset-x-px bottom-0">
         {/* Actions: These are just examples to demonstrate the concept, replace/wire these up however makes sense for your project. */}
         <div className="flex flex-nowrap justify-end space-x-2 px-2 py-2 sm:px-3">
-          <Listbox as="div" value={labelled} onChange={setLabelled} className="flex-shrink-0">
-            {({ open }) => (
-              <>
-                <Listbox.Label className="sr-only"> Add a label </Listbox.Label>
-                <div className="relative">
-                  <Listbox.Button className="relative inline-flex items-center whitespace-nowrap rounded-full bg-gray-50 px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 sm:px-3">
-                    <TagIcon
-                      className={classNames(
-                        labelled.value === null ? 'text-gray-300' : 'text-gray-500',
-                        'h-5 w-5 flex-shrink-0 sm:-ml-1',
-                      )}
-                      aria-hidden="true"
-                    />
-                    <span
-                      className={classNames(
-                        labelled.value === null ? '' : 'text-gray-900',
-                        'hidden truncate sm:ml-2 sm:block',
-                      )}
-                    >
-                      {labelled.value === null ? 'Label' : labelled.name}
-                    </span>
-                  </Listbox.Button>
-
-                  <Transition
-                    show={open}
-                    as={Fragment}
-                    leave="transition ease-in duration-100"
-                    leaveFrom="opacity-100"
-                    leaveTo="opacity-0"
-                  >
-                    <Listbox.Options className="absolute right-0 z-10 mt-1 max-h-56 w-52 overflow-auto rounded-lg bg-white py-3 text-base shadow ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                      {labels.map((label) => (
-                        <Listbox.Option
-                          key={label.value}
-                          className={({ active }) =>
-                            classNames(
-                              active ? 'bg-gray-100' : 'bg-white',
-                              'relative cursor-default select-none px-3 py-2',
-                            )
-                          }
-                          value={label}
-                        >
-                          <div className="flex items-center">
-                            <span className="block truncate font-medium">{label.name}</span>
-                          </div>
-                        </Listbox.Option>
-                      ))}
-                    </Listbox.Options>
-                  </Transition>
-                </div>
-              </>
-            )}
-          </Listbox>
-
           <Listbox as="div" value={dated} onChange={setDated} className="flex-shrink-0">
             {({ open }) => (
               <>
@@ -208,7 +145,7 @@ export default function MessageBox({ selectedPerson }: MessageBoxProps) {
           </div>
         </div>
       </div>
-    </form>
+    </>
   );
 }
 
