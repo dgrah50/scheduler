@@ -34,15 +34,6 @@ declare module 'next-auth' {
 export const authOptions: NextAuthOptions = {
   callbacks: {
     session({ session, user }) {
-      if (session.user) {
-        console.log(
-          '%cauth.ts line:38 session.user',
-          'color: white; background-color: #007acc;',
-          session.user,
-        );
-        // session.user.id = user.id;
-        // session.user.role = user.role; <-- put other properties on the session here
-      }
       return session;
     },
   },

@@ -14,7 +14,7 @@ export function MessageList() {
 
   return (
     <div className="bg-white lg:min-w-0 lg:flex-1 lg:overflow-y-scroll">
-      <div className="border-b border-t border-gray-200 pl-4 pr-6 pt-4 pb-4 sm:pl-6 lg:pl-8 xl:border-t-0 xl:pl-6 xl:pt-6">
+      <div className="border-b border-t border-gray-200 pb-4 pl-4 pr-6 pt-4 sm:pl-6 lg:pl-8 xl:border-t-0 xl:pl-6 xl:pt-6">
         <div className="flex items-center">
           <h1 className="flex-1 text-lg font-medium">Scheduled Messages</h1>
           <Menu as="div" className="relative">
@@ -87,7 +87,7 @@ export function MessageList() {
                     </div>
                     <div className="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
                       <div>
-                        <p className="truncate text-sm font-medium text-azure-radiance-800">
+                        <p className="truncate text-sm font-medium text-indigo-800">
                           {message.recipient_name}
                         </p>
                         <p className="mt-2 flex items-center text-sm text-gray-500">

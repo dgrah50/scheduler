@@ -5,7 +5,7 @@ export function ActivityFeed() {
   return (
     <div className="bg-gray-50 pr-4 sm:pr-6 lg:flex-shrink-0 lg:border-l lg:border-gray-200 lg:pr-8 xl:pr-0">
       <div className="pl-6 lg:w-80">
-        <div className="pt-6 pb-2">
+        <div className="pb-2 pt-6">
           <h2 className="text-sm font-semibold">Activity</h2>
         </div>
         <div>
@@ -32,10 +32,7 @@ export function ActivityFeed() {
             ))}
           </ul>
           <div className="border-t border-gray-200 py-4 text-sm">
-            <a
-              href="#"
-              className="font-semibold text-azure-radiance-700 hover:text-azure-radiance-900"
-            >
+            <a href="#" className="font-semibold text-indigo-700 hover:text-indigo-900">
               View all activity
               <span aria-hidden="true"> &rarr;</span>
             </a>

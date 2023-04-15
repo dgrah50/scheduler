@@ -10,7 +10,6 @@ function Signin({ csrfToken, providers }: InferGetServerSidePropsType<typeof get
   const { status } = useSession();
 
   useEffect(() => {
-    console.log('%csignin.tsx line:13 status', 'color: white; background-color: #007acc;', status);
     if (status === 'authenticated') {
       void router.push('/');
     }
@@ -18,7 +17,7 @@ function Signin({ csrfToken, providers }: InferGetServerSidePropsType<typeof get
   return (
     <>
       <div className="flex min-h-full">
-        <div className="flex flex-1 flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+        <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
           <div className="mx-auto w-full max-w-sm lg:w-96">
             <div>
               <img
@@ -48,7 +47,7 @@ function Signin({ csrfToken, providers }: InferGetServerSidePropsType<typeof get
                         <div key={provider.name}>
                           <button
                             onClick={() => signIn(provider.id, { callbackUrl: `/` })}
-                            className="inline-flex w-full justify-center rounded-md bg-white py-2 px-3 text-gray-500 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0"
+                            className="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-gray-500 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0"
                           >
                             DISCORD
                             {/* <Discord /> */}
@@ -147,7 +146,7 @@ function EmailForm({ csrfToken }: { csrfToken: string | undefined }) {
         <div>
           <button
             type="submit"
-            className="flex w-full justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Sign in
           </button>

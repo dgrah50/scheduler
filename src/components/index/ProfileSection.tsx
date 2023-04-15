@@ -22,7 +22,7 @@ export function ProfileSection() {
               <div className="flex items-center space-x-3">
                 <Menu as="div" className="relative ml-4 flex-shrink-0">
                   <div>
-                    <Menu.Button className="flex rounded-full bg-azure-radiance-700 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-azure-radiance-700">
+                    <Menu.Button className="flex rounded-full bg-indigo-700 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-700">
                       <span className="sr-only">Open user menu</span>
                       <Image
                         className="h-12 w-12 rounded-full"
@@ -96,14 +96,14 @@ export function ProfileSection() {
                 <button
                   onClick={toggleModal}
                   type="button"
-                  className="inline-flex items-center justify-center rounded-md bg-azure-radiance-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-azure-radiance-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-azure-radiance-600 xl:w-full"
+                  className="inline-flex items-center justify-center rounded-md bg-indigo-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-azure-radiance-600 xl:w-full"
                 >
                   New Message
                 </button>
               </div>
             </div>
             {/* Meta info */}
-            <div className="flex flex-col space-y-6 sm:flex-row sm:space-y-0 sm:space-x-8 xl:flex-col xl:space-x-0 xl:space-y-6">
+            <div className="flex flex-col space-y-6 sm:flex-row sm:space-x-8 sm:space-y-0 xl:flex-col xl:space-x-0 xl:space-y-6">
               <div className="flex items-center space-x-2">
                 <CheckBadgeIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                 <span className="text-sm font-medium text-gray-500">Pro Member</span>
