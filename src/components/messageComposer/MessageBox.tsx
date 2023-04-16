@@ -15,14 +15,19 @@ interface MessageBoxProps {
 export default function MessageBox({ selectedPerson, defaultMessageValue }: MessageBoxProps) {
   const [messageDate, setStartDate] = useState<Date | null>(null);
 
-  const { setModalState } = useModalStore();
+  const { setModalState, toggleModal, setSelectedPerson } = useModalStore();
   const [message, setMessage] = useState<string>(defaultMessageValue ?? '');
   const utils = api.useContext();
 
   const addMessage = api.messages.addMessage.useMutation({
     async onSuccess() {
       utils.messages.getAll.invalidate();
-      setModalState(ModalStateEnum.ContactList);
+      toggleModal();
+      setTimeout(() => {
+        console.log('swtiching');
+        setSelectedPerson(null);
+        setModalState(ModalStateEnum.ContactList);
+      }, 500);
     },
   });
 
