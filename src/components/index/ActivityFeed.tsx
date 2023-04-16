@@ -9,7 +9,7 @@ export function ActivityFeed() {
           <h2 className="text-sm font-semibold">Activity</h2>
         </div>
         <div>
-          <ul role="list" className="divide-y divide-gray-200">
+          <ul className="divide-y divide-gray-200">
             {activityItems.map((item) => (
               <li key={item.recipient} className="py-4">
                 <div className="flex space-x-3">
@@ -32,10 +32,10 @@ export function ActivityFeed() {
             ))}
           </ul>
           <div className="border-t border-gray-200 py-4 text-sm">
-            <a href="#" className="font-semibold text-indigo-700 hover:text-indigo-900">
+            <button type="button" className="font-semibold text-indigo-700 hover:text-indigo-900">
               View all activity
               <span aria-hidden="true"> &rarr;</span>
-            </a>
+            </button>
           </div>
         </div>
       </div>

@@ -27,7 +27,7 @@ type ModalState = {
   selectedPerson: Person | null;
 };
 
-export const useModalStore = create<ModalState>((set, get) => ({
+export const useModalStore = create<ModalState>((set) => ({
   modalState: ModalStateEnum.Closed,
   isModalOpen: false,
   setModalState: (modalState: ModalStateEnum) => set(() => ({ modalState })),

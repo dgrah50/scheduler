@@ -12,7 +12,7 @@ const server = z.object({
   NEXTAUTH_URL: z.preprocess(
     // This makes Vercel deployments not fail if you don't set NEXTAUTH_URL
     // Since NextAuth.js automatically uses the VERCEL_URL if present.
-    (str) => process.env.VERCEL_URL ?? str,
+    (str) => (process.env.VERCEL_URL ? process.env.VERCEL_URL : str),
     // VERCEL_URL doesn't include `https` so it cant be validated as a URL
     process.env.VERCEL ? z.string().min(1) : z.string().url(),
   ),
@@ -58,9 +58,10 @@ const merged = server.merge(client);
 /** @typedef {z.infer<typeof merged>} MergedOutput */
 /** @typedef {z.SafeParseReturnType<MergedInput, MergedOutput>} MergedSafeParseReturn */
 
+// eslint-disable-next-line import/no-mutable-exports
 let env = /** @type {MergedOutput} */ (process.env);
 
-if (!!process.env.SKIP_ENV_VALIDATION == false) {
+if (!!process.env.SKIP_ENV_VALIDATION === false) {
   const isServer = typeof window === 'undefined';
 
   const parsed = /** @type {MergedSafeParseReturn} */ (
@@ -85,6 +86,7 @@ if (!!process.env.SKIP_ENV_VALIDATION == false) {
             ? '❌ Attempted to access a server-side environment variable on the client'
             : `❌ Attempted to access server-side environment variable '${prop}' on the client`,
         );
+
       return target[/** @type {keyof typeof target} */ (prop)];
     },
   });

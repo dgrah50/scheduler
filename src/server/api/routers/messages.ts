@@ -1,4 +1,4 @@
-import { createTRPCRouter, publicProcedure, protectedProcedure } from '~/server/api/trpc';
+import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
 import { z } from 'zod';
 
 export const messagesRouter = createTRPCRouter({
@@ -13,14 +13,16 @@ export const messagesRouter = createTRPCRouter({
         recipient_number: z.string(),
       }),
     )
-    .mutation(async ({ ctx, input }) => await ctx.prisma.messages.create({
+    .mutation(async ({ ctx, input }) =>
+      ctx.prisma.messages.create({
         data: {
           channel: input.channel,
           msg_text: input.message,
           recipient_name: input.recipient,
           recipient_number: input.recipient_number,
-          send_timestamp: parseInt((new Date('2012.08.10').getTime() / 1000).toFixed(0)), // unix timestamp
+          send_timestamp: parseInt((new Date('2012.08.10').getTime() / 1000).toFixed(0), 10), // unix timestamp
           user_id: input.userId,
         },
-      })),
+      }),
+    ),
 });

@@ -1,4 +1,4 @@
-import { Fragment, useContext, useState } from 'react';
+import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { ModalStateEnum, Person, useModalStore } from '~/store/store';
 import MessageBox from './MessageBox';

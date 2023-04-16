@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Combobox } from '@headlessui/react';
-import { MagnifyingGlassIcon , ChevronRightIcon } from '@heroicons/react/20/solid';
+import { MagnifyingGlassIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
 import { UsersIcon } from '@heroicons/react/24/outline';
 import classNames from 'classnames';
 import { Person } from '~/store/store';
+import Image from 'next/image';
 import { isPerson } from './index';
 import { recent, people } from './mockData';
 
@@ -13,7 +14,9 @@ interface ContactListProps {
 export function ContactList({ onPersonClick }: ContactListProps) {
   const [query, setQuery] = useState('');
 
-  const filteredPeople = people.filter((person) => person.name.toLowerCase().includes(query.toLowerCase()));
+  const filteredPeople = people.filter((person) =>
+    person.name.toLowerCase().includes(query.toLowerCase()),
+  );
 
   return (
     <Combobox<Person>>
@@ -57,14 +60,16 @@ export function ContactList({ onPersonClick }: ContactListProps) {
                             active && 'bg-gray-100 text-gray-900',
                           )
                         }
-                        onClick={(e) => onPersonClick(person)}
+                        onClick={() => onPersonClick(person)}
                       >
                         {({ active }) => (
                           <>
-                            <img
+                            <Image
                               src={person.imageUrl}
                               alt=""
                               className="h-6 w-6 flex-none rounded-full"
+                              width="24"
+                              height="24"
                             />
                             <span className="ml-3 flex-auto truncate">{person.name}</span>
                             {active && (
@@ -79,7 +84,7 @@ export function ContactList({ onPersonClick }: ContactListProps) {
                     ))}
                   </div>
 
-                  {query == '' && (
+                  {query === '' && (
                     <>
                       <h2 className="mb-4 mt-2 text-xs font-semibold text-gray-500">
                         Other Contacts
@@ -90,7 +95,7 @@ export function ContactList({ onPersonClick }: ContactListProps) {
                             (person) =>
                               !recent
                                 .filter(isPerson)
-                                .find((recentPerson) => recentPerson.id == person.id),
+                                .find((recentPerson) => recentPerson.id === person.id),
                           )
                           .map((person) => (
                             <Combobox.Option
@@ -103,14 +108,16 @@ export function ContactList({ onPersonClick }: ContactListProps) {
                                   active && 'bg-gray-100 text-gray-900',
                                 )
                               }
-                              onClick={(e) => onPersonClick(person)}
+                              onClick={() => onPersonClick(person)}
                             >
                               {({ active }) => (
                                 <>
-                                  <img
+                                  <Image
                                     src={person.imageUrl}
                                     alt=""
                                     className="h-6 w-6 flex-none rounded-full"
+                                    width="24"
+                                    height="24"
                                   />
                                   <span className="ml-3 flex-auto truncate">{person.name}</span>
                                   {active && (
@@ -131,10 +138,12 @@ export function ContactList({ onPersonClick }: ContactListProps) {
                 {activeOption && (
                   <div className="hidden h-96 w-1/2 flex-none flex-col divide-y divide-gray-100 overflow-y-auto sm:flex">
                     <div className="flex-none p-6 text-center">
-                      <img
+                      <Image
                         src={activeOption.imageUrl}
                         alt=""
                         className="mx-auto h-16 w-16 rounded-full"
+                        width="24"
+                        height="24"
                       />
                       <h2 className="mt-3 font-semibold text-gray-900">{activeOption.name}</h2>
                       <p className="text-sm leading-6 text-gray-500">{activeOption.role}</p>

@@ -73,8 +73,9 @@ export function MessageList() {
         </div>
       </div>
       <div className="overflow-y-scroll bg-white shadow sm:rounded-md">
-        <ul role="list" className="divide-y divide-gray-200">
+        <ul className="divide-y divide-gray-200">
           {messages?.map((message) => (
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
             <li
               key={message.recipient_name}
               onClick={() => {

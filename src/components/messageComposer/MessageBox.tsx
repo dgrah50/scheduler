@@ -1,12 +1,11 @@
-import { Fragment, LegacyRef, ReactNode, forwardRef, useContext, useState } from 'react';
-import { Listbox, Transition } from '@headlessui/react';
-import { CalendarIcon } from '@heroicons/react/20/solid';
-import classNames from 'classnames';
+import { Fragment, useState } from 'react';
 import { api } from '~/utils/api';
 import { ModalStateEnum, Person, useModalStore } from '~/store/store';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import clsx from 'clsx';
+import Image from 'next/image';
+import { TimePickerButton } from './TimePickerButton';
 
 interface MessageBoxProps {
   selectedPerson: Person;
@@ -37,21 +36,6 @@ export default function MessageBox({ selectedPerson, defaultMessageValue }: Mess
     });
   }
 
-  const TimePickerButton = forwardRef(
-    (
-      { value, onClick }: { value?: ReactNode; onClick?: () => void },
-      ref: LegacyRef<HTMLButtonElement>,
-    ) => (
-        <button
-          className="mt-3 inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:col-start-1 sm:mt-0"
-          onClick={onClick}
-          ref={ref}
-        >
-          {value || 'Pick a time to send'}
-        </button>
-      ),
-  );
-
   return (
     <>
       <div className="overflow-hidden rounded-lg border border-gray-300 shadow-sm">
@@ -61,6 +45,7 @@ export default function MessageBox({ selectedPerson, defaultMessageValue }: Mess
           </div>
           <div className="flex-shrink-0">
             <button
+              type="button"
               onClick={() => {
                 setModalState(ModalStateEnum.ContactList);
               }}
@@ -118,6 +103,7 @@ export default function MessageBox({ selectedPerson, defaultMessageValue }: Mess
         <div className="flex items-center justify-end space-x-3 border-t border-gray-200 px-2 py-2 sm:px-3">
           <div className="flex-shrink-0">
             <button
+              type="button"
               onClick={() => {
                 sendMessage();
               }}
@@ -146,7 +132,13 @@ function RecipientAvatar({ selectedPerson }: RecipientAvatarProps) {
     <a href="#" className="group block flex-shrink-0">
       <div className="flex items-center">
         <div>
-          <img className="inline-block h-9 w-9 rounded-full" src={selectedPerson.imageUrl} alt="" />
+          <Image
+            className="inline-block h-9 w-9 rounded-full"
+            src={selectedPerson.imageUrl}
+            alt=""
+            width="36"
+            height="36"
+          />
         </div>
         <div className="ml-3">
           <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">

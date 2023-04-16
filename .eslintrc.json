@@ -129,7 +129,10 @@
     "react/jsx-one-expression-per-line": "off",
     "react/jsx-props-no-multi-spaces": "off",
     "react/jsx-tag-spacing": "error",
-    "react/jsx-wrap-multilines": "off"
+    "react/jsx-wrap-multilines": "off",
+    "jsx-a11y/anchor-is-valid": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/label-has-associated-control": "off"
   },
   "overrides": [
     {

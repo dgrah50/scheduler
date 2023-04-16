@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { signOut, useSession } from 'next-auth/react';
 import { api } from '~/utils/api';
 import { ModalStateEnum, useModalStore } from '~/store/store';
+import Link from 'next/link';
 
 export function ProfileSection() {
   const { data: sessionData } = useSession();
@@ -69,7 +70,7 @@ export function ProfileSection() {
                       </Menu.Item>
                       <Menu.Item key="profile">
                         {({ active }) => (
-                          <a
+                          <Link
                             href="/api/auth/signout"
                             onClick={(e) => {
                               e.preventDefault();
@@ -81,7 +82,7 @@ export function ProfileSection() {
                             )}
                           >
                             Sign Out
-                          </a>
+                          </Link>
                         )}
                       </Menu.Item>
                     </Menu.Items>
