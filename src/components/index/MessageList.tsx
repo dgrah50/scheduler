@@ -7,7 +7,6 @@ import {
   PhoneIcon,
 } from '@heroicons/react/20/solid';
 import classNames from 'classnames';
-import { number } from 'zod';
 import { ModalStateEnum, useModalStore } from '~/store/store';
 import { api } from '~/utils/api';
 
@@ -81,7 +80,7 @@ export function MessageList() {
               onClick={() => {
                 setSelectedPerson({
                   id: 1,
-                  name: message.recipient_name ?? '', //TODO : Ensure name here
+                  name: message.recipient_name ?? '', // TODO : Ensure name here
                   phone: 'stringnumber',
                   email: 'stringnumber',
                   role: 'stringnumber',

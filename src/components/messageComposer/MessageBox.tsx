@@ -30,7 +30,7 @@ export default function MessageBox({ selectedPerson, defaultMessageValue }: Mess
   async function sendMessage() {
     addMessage.mutateAsync({
       channel: 'WhatsApp',
-      message: message,
+      message,
       recipient: selectedPerson.name,
       recipient_number: selectedPerson.phone,
       userId: 1,
@@ -41,8 +41,7 @@ export default function MessageBox({ selectedPerson, defaultMessageValue }: Mess
     (
       { value, onClick }: { value?: ReactNode; onClick?: () => void },
       ref: LegacyRef<HTMLButtonElement>,
-    ) => {
-      return (
+    ) => (
         <button
           className="mt-3 inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:col-start-1 sm:mt-0"
           onClick={onClick}
@@ -50,8 +49,7 @@ export default function MessageBox({ selectedPerson, defaultMessageValue }: Mess
         >
           {value || 'Pick a time to send'}
         </button>
-      );
-    },
+      ),
   );
 
   return (
@@ -105,7 +103,6 @@ export default function MessageBox({ selectedPerson, defaultMessageValue }: Mess
       </div>
 
       <div className="absolute inset-x-px bottom-0">
-        {/* Actions: These are just examples to demonstrate the concept, replace/wire these up however makes sense for your project. */}
         <div className="flex flex-nowrap justify-end space-x-2 px-2 py-2 sm:px-3">
           <DatePicker
             selected={messageDate}

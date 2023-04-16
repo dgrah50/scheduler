@@ -3,9 +3,11 @@
     "import",
     "react",
     "react-hooks",
-    "jest"
+    "jest",
+    "unused-imports"
   ],
   "extends": [
+    "plugin:@next/next/recommended",
     "airbnb",
     "airbnb/hooks",
     "plugin:jest/recommended",
@@ -15,6 +17,9 @@
   "settings": {
     "react": {
       "version": "detect"
+    },
+    "import/resolver": {
+      "typescript": {}
     }
   },
   "parserOptions": {
@@ -49,15 +54,7 @@
         ]
       }
     ],
-    "react/jsx-filename-extension": [
-      "warn",
-      {
-        "extensions": [
-          ".tsx",
-          ".jsx"
-        ]
-      }
-    ],
+    "react/jsx-filename-extension": "off",
     "import/no-extraneous-dependencies": [
       "error",
       {
@@ -87,6 +84,7 @@
     ],
     "no-return-assign": "off",
     "prefer-destructuring": "off",
+    "react/react-in-jsx-scope": "off",
     "react/destructuring-assignment": "off",
     "react/require-default-props": "off",
     "no-useless-constructor": "off",
@@ -164,9 +162,9 @@
         }
       },
       "rules": {
-        "import/no-unresolved": "off",
-        "no-unused-expressions": "off",
-        "no-use-before-define": "off",
+        "import/no-unresolved": "error",
+        "no-unused-expressions": "error",
+        "no-use-before-define": "error",
         "@typescript-eslint/ban-ts-ignore": "off",
         "@typescript-eslint/no-use-before-define": "off",
         "@typescript-eslint/no-unused-vars": [

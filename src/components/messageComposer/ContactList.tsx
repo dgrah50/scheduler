@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { Combobox } from '@headlessui/react';
-import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
+import { MagnifyingGlassIcon , ChevronRightIcon } from '@heroicons/react/20/solid';
 import { UsersIcon } from '@heroicons/react/24/outline';
-import { ChevronRightIcon } from '@heroicons/react/20/solid';
 import classNames from 'classnames';
+import { Person } from '~/store/store';
 import { isPerson } from './index';
 import { recent, people } from './mockData';
-import { Person } from '~/store/store';
 
 interface ContactListProps {
   onPersonClick: (value: Person) => void;
@@ -14,9 +13,7 @@ interface ContactListProps {
 export function ContactList({ onPersonClick }: ContactListProps) {
   const [query, setQuery] = useState('');
 
-  const filteredPeople = people.filter((person) => {
-    return person.name.toLowerCase().includes(query.toLowerCase());
-  });
+  const filteredPeople = people.filter((person) => person.name.toLowerCase().includes(query.toLowerCase()));
 
   return (
     <Combobox<Person>>

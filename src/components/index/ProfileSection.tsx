@@ -43,7 +43,7 @@ export function ProfileSection() {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="absolute z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <Menu.Item key={'Profile'}>
+                      <Menu.Item key="Profile">
                         {({ active }) => (
                           <a
                             className={classNames(
@@ -51,11 +51,11 @@ export function ProfileSection() {
                               'block px-4 py-2 text-sm text-gray-700',
                             )}
                           >
-                            {'Profile'}
+                            Profile
                           </a>
                         )}
                       </Menu.Item>
-                      <Menu.Item key={'Settings'}>
+                      <Menu.Item key="Settings">
                         {({ active }) => (
                           <a
                             className={classNames(
@@ -63,14 +63,14 @@ export function ProfileSection() {
                               'block px-4 py-2 text-sm text-gray-700',
                             )}
                           >
-                            {'Settings'}
+                            Settings
                           </a>
                         )}
                       </Menu.Item>
-                      <Menu.Item key={'profile'}>
+                      <Menu.Item key="profile">
                         {({ active }) => (
                           <a
-                            href={`/api/auth/signout`}
+                            href="/api/auth/signout"
                             onClick={(e) => {
                               e.preventDefault();
                               signOut();

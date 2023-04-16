@@ -20,6 +20,14 @@ import { type Session } from "next-auth";
 import { getServerAuthSession } from "~/server/auth";
 import { prisma } from "~/server/db";
 
+/**
+ * 2. INITIALIZATION
+ *
+ * This is where the tRPC API is initialized, connecting the context and transformer.
+ */
+import { initTRPC, TRPCError } from "@trpc/server";
+import superjson from "superjson";
+
 type CreateContextOptions = {
   session: Session | null;
 };
@@ -34,12 +42,10 @@ type CreateContextOptions = {
  *
  * @see https://create.t3.gg/en/usage/trpc#-servertrpccontextts
  */
-const createInnerTRPCContext = (opts: CreateContextOptions) => {
-  return {
+const createInnerTRPCContext = (opts: CreateContextOptions) => ({
     session: opts.session,
     prisma,
-  };
-};
+  });
 
 /**
  * This is the actual context you will use in your router. It will be used to process every request
@@ -57,14 +63,6 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
     session,
   });
 };
-
-/**
- * 2. INITIALIZATION
- *
- * This is where the tRPC API is initialized, connecting the context and transformer.
- */
-import { initTRPC, TRPCError } from "@trpc/server";
-import superjson from "superjson";
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
@@ -101,7 +99,8 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
   if (!ctx.session || !ctx.session.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
-  return next({
+  
+return next({
     ctx: {
       // infers the `session` as non-nullable
       session: { ...ctx.session, user: ctx.session.user },

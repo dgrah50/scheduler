@@ -14,9 +14,9 @@ function Signin({ csrfToken, providers }: InferGetServerSidePropsType<typeof get
       void router.push('/');
     }
   }, [status]);
-  return (
-    <>
-      <div className="flex min-h-full">
+  
+return (
+    <div className="flex min-h-full">
         <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
           <div className="mx-auto w-full max-w-sm lg:w-96">
             <div>
@@ -62,7 +62,6 @@ function Signin({ csrfToken, providers }: InferGetServerSidePropsType<typeof get
           />
         </div>
       </div>
-    </>
   );
 }
 
