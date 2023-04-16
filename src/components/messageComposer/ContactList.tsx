@@ -4,8 +4,9 @@ import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import { UsersIcon } from '@heroicons/react/24/outline';
 import { ChevronRightIcon } from '@heroicons/react/20/solid';
 import classNames from 'classnames';
-import { Person, isPerson } from './index';
+import { isPerson } from './index';
 import { recent, people } from './mockData';
+import { Person } from '~/store/store';
 
 interface ContactListProps {
   onPersonClick: (value: Person) => void;
