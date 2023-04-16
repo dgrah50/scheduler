@@ -43,9 +43,8 @@ function Signin({ csrfToken, providers }: InferGetServerSidePropsType<typeof get
                             onClick={() => signIn(provider.id, { callbackUrl: `/` })}
                             className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                           >
-                            DISCORD
-                            {/* <Discord /> */}
-                            <span className="sr-only">Sign in with Discord</span>
+                            {provider.name}
+                            <span className="sr-only">{`Sign in with ${provider.name}`}</span>
                           </button>
                         </div>
                       ))}
