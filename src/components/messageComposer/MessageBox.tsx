@@ -24,7 +24,6 @@ export default function MessageBox({ selectedPerson, defaultMessageValue }: Mess
       utils.messages.getAll.invalidate();
       toggleModal();
       setTimeout(() => {
-        console.log('swtiching');
         setSelectedPerson(null);
         setModalState(ModalStateEnum.ContactList);
       }, 500);
