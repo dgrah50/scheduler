@@ -3,7 +3,7 @@ import { Combobox } from '@headlessui/react';
 import { MagnifyingGlassIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
 import { UsersIcon } from '@heroicons/react/24/outline';
 import classNames from 'classnames';
-import { Person } from '~/store/store';
+import { Person } from '~/store/modalStore';
 import Image from 'next/image';
 import { isPerson } from './index';
 import { recent, people } from './mockData';

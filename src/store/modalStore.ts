@@ -25,6 +25,8 @@ type ModalState = {
   setModalState: (modalState: ModalStateEnum) => void;
   setSelectedPerson: (person: Person | null) => void;
   selectedPerson: Person | null;
+  message: string | null;
+  setMessage: (message: string | null) => void;
 };
 
 export const useModalStore = create<ModalState>((set) => ({
@@ -34,4 +36,6 @@ export const useModalStore = create<ModalState>((set) => ({
   selectedPerson: null,
   setSelectedPerson: (person: Person | null) => set(() => ({ selectedPerson: person })),
   toggleModal: () => set((state) => ({ isModalOpen: !state.isModalOpen })),
+  message: '',
+  setMessage: (message: string | null) => set(() => ({ message })),
 }));

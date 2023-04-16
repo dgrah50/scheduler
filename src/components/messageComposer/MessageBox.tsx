@@ -1,6 +1,6 @@
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import { api } from '~/utils/api';
-import { ModalStateEnum, Person, useModalStore } from '~/store/store';
+import { ModalStateEnum, Person, useModalStore } from '~/store/modalStore';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import clsx from 'clsx';
@@ -9,14 +9,12 @@ import { TimePickerButton } from './TimePickerButton';
 
 interface MessageBoxProps {
   selectedPerson: Person;
-  defaultMessageValue?: string;
 }
 
-export default function MessageBox({ selectedPerson, defaultMessageValue }: MessageBoxProps) {
+export default function MessageBox({ selectedPerson }: MessageBoxProps) {
   const [messageDate, setStartDate] = useState<Date | null>(null);
 
-  const { setModalState, toggleModal, setSelectedPerson } = useModalStore();
-  const [message, setMessage] = useState<string>(defaultMessageValue ?? '');
+  const { setModalState, toggleModal, setSelectedPerson, message, setMessage } = useModalStore();
   const utils = api.useContext();
 
   const addMessage = api.messages.addMessage.useMutation({
@@ -31,13 +29,15 @@ export default function MessageBox({ selectedPerson, defaultMessageValue }: Mess
   });
 
   async function sendMessage() {
-    addMessage.mutateAsync({
-      channel: 'WhatsApp',
-      message,
-      recipient: selectedPerson.name,
-      recipient_number: selectedPerson.phone,
-      userId: 1,
-    });
+    if (message !== null) {
+      addMessage.mutateAsync({
+        channel: 'WhatsApp',
+        message,
+        recipient: selectedPerson.name,
+        recipient_number: selectedPerson.phone,
+        userId: 1,
+      });
+    }
   }
 
   return (
@@ -73,7 +73,7 @@ export default function MessageBox({ selectedPerson, defaultMessageValue }: Mess
           id="message"
           className="block w-full resize-none border-0 py-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
           placeholder={`Happy birthday, ${selectedPerson.name.split(' ')[0]}!`}
-          value={message}
+          value={message || ''}
           onChange={(e) => setMessage(e.target.value)}
         />
 

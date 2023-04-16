@@ -5,7 +5,7 @@ import { Fragment } from 'react';
 import Image from 'next/image';
 import { signOut, useSession } from 'next-auth/react';
 import { api } from '~/utils/api';
-import { ModalStateEnum, useModalStore } from '~/store/store';
+import { ModalStateEnum, useModalStore } from '~/store/modalStore';
 import Link from 'next/link';
 
 export function ProfileSection() {

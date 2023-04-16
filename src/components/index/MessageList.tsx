@@ -7,13 +7,13 @@ import {
   PhoneIcon,
 } from '@heroicons/react/20/solid';
 import classNames from 'classnames';
-import { ModalStateEnum, useModalStore } from '~/store/store';
+import { ModalStateEnum, useModalStore } from '~/store/modalStore';
 import { api } from '~/utils/api';
 
 export function MessageList() {
   const messages = api.messages.getAll.useQuery().data;
 
-  const { setModalState, toggleModal, setSelectedPerson } = useModalStore();
+  const { setModalState, toggleModal, setSelectedPerson, setMessage } = useModalStore();
 
   return (
     <div className="bg-white lg:min-w-0 lg:flex-1 lg:overflow-y-scroll">
@@ -87,8 +87,9 @@ export function MessageList() {
                   role: 'stringnumber',
                   url: 'stringnumber',
                   profileUrl: 'stringnumber',
-                  imageUrl: 'stringnumber',
+                  imageUrl: 'https://i.pravatar.cc/150?img=2',
                 });
+                setMessage(message.msg_text ?? '');
                 setModalState(ModalStateEnum.MessageBox);
                 toggleModal();
               }}

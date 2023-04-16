@@ -1,12 +1,19 @@
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { ModalStateEnum, Person, useModalStore } from '~/store/store';
+import { ModalStateEnum, Person, useModalStore } from '~/store/modalStore';
 import MessageBox from './MessageBox';
 import { ContactList } from './ContactList';
 
 export function MessageComposer() {
-  const { isModalOpen, setModalState, toggleModal, modalState, selectedPerson, setSelectedPerson } =
-    useModalStore();
+  const {
+    isModalOpen,
+    setModalState,
+    toggleModal,
+    modalState,
+    selectedPerson,
+    setSelectedPerson,
+    setMessage,
+  } = useModalStore();
 
   const onPersonClick = (person: Person) => {
     setSelectedPerson(person);
@@ -15,6 +22,7 @@ export function MessageComposer() {
 
   const onClose = () => {
     toggleModal();
+    setMessage(null);
     setTimeout(() => setSelectedPerson(null), 500);
   };
 
