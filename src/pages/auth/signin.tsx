@@ -28,12 +28,6 @@ function Signin({ csrfToken, providers }: InferGetServerSidePropsType<typeof get
               <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">
                 Sign in to your account
               </h2>
-              <p className="mt-2 text-sm text-gray-600">
-                Or{' '}
-                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                  start your 14-day free trial
-                </a>
-              </p>
             </div>
 
             <div className="mt-8">
@@ -47,7 +41,7 @@ function Signin({ csrfToken, providers }: InferGetServerSidePropsType<typeof get
                         <div key={provider.name}>
                           <button
                             onClick={() => signIn(provider.id, { callbackUrl: `/` })}
-                            className="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-gray-500 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0"
+                            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                           >
                             DISCORD
                             {/* <Discord /> */}
@@ -57,18 +51,7 @@ function Signin({ csrfToken, providers }: InferGetServerSidePropsType<typeof get
                       ))}
                   </div>
                 </div>
-
-                <div className="relative mt-6">
-                  <div className="absolute inset-0 flex items-center" aria-hidden="true">
-                    <div className="w-full border-t border-gray-300" />
-                  </div>
-                  <div className="relative flex justify-center text-sm">
-                    <span className="bg-white px-2 text-gray-500">Or continue with</span>
-                  </div>
-                </div>
               </div>
-
-              <EmailForm csrfToken={csrfToken} />
             </div>
           </div>
         </div>
