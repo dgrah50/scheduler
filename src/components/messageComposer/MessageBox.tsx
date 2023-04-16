@@ -1,18 +1,12 @@
-import { Fragment, useContext, useState } from 'react';
+import { Fragment, LegacyRef, ReactNode, forwardRef, useContext, useState } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CalendarIcon } from '@heroicons/react/20/solid';
 import classNames from 'classnames';
 import { api } from '~/utils/api';
 import { ModalStateEnum, Person, useModalStore } from '~/store/store';
-
-const dueDates: DueDate[] = [
-  { name: 'No due date', value: null },
-  { name: 'Today', value: 'today' },
-];
-interface DueDate {
-  name: string;
-  value: string | null;
-}
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import clsx from 'clsx';
 
 interface MessageBoxProps {
   selectedPerson: Person;
@@ -20,7 +14,8 @@ interface MessageBoxProps {
 }
 
 export default function MessageBox({ selectedPerson, defaultMessageValue }: MessageBoxProps) {
-  const [dated, setDated] = useState<DueDate>(dueDates[0] as DueDate);
+  const [messageDate, setStartDate] = useState<Date | null>(null);
+
   const { setModalState } = useModalStore();
   const [message, setMessage] = useState<string>(defaultMessageValue ?? '');
   const utils = api.useContext();
@@ -42,6 +37,23 @@ export default function MessageBox({ selectedPerson, defaultMessageValue }: Mess
     });
   }
 
+  const TimePickerButton = forwardRef(
+    (
+      { value, onClick }: { value?: ReactNode; onClick?: () => void },
+      ref: LegacyRef<HTMLButtonElement>,
+    ) => {
+      return (
+        <button
+          className="mt-3 inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:col-start-1 sm:mt-0"
+          onClick={onClick}
+          ref={ref}
+        >
+          {value || 'Pick a time to send'}
+        </button>
+      );
+    },
+  );
+
   return (
     <>
       <div className="overflow-hidden rounded-lg border border-gray-300 shadow-sm">
@@ -60,16 +72,11 @@ export default function MessageBox({ selectedPerson, defaultMessageValue }: Mess
             </button>
           </div>
         </div>
-        <label htmlFor="title" className="sr-only">
-          {`Schedule a birthday message for ${selectedPerson.name.split(' ')[0]}!`}
-        </label>
-        <input
-          type="text"
-          name="title"
-          id="title"
-          className="block w-full border-0 pt-2.5 text-lg font-medium placeholder:text-gray-400 focus:ring-0"
-          placeholder={`Schedule a birthday message for ${selectedPerson.name.split(' ')[0]}!`}
-        />
+        <div className="flex items-center justify-between space-x-3 border-t border-gray-200 px-2 py-2 sm:px-3">
+          <h3 className="block w-full border-0 pt-2.5 text-lg font-medium placeholder:text-gray-400 focus:ring-0">
+            {`Schedule a birthday message for ${selectedPerson.name.split(' ')[0]}!`}
+          </h3>
+        </div>
         <label htmlFor="message" className="sr-only">
           Message
         </label>
@@ -100,59 +107,15 @@ export default function MessageBox({ selectedPerson, defaultMessageValue }: Mess
       <div className="absolute inset-x-px bottom-0">
         {/* Actions: These are just examples to demonstrate the concept, replace/wire these up however makes sense for your project. */}
         <div className="flex flex-nowrap justify-end space-x-2 px-2 py-2 sm:px-3">
-          <Listbox as="div" value={dated} onChange={setDated} className="flex-shrink-0">
-            {({ open }) => (
-              <>
-                <Listbox.Label className="sr-only"> Add a due date </Listbox.Label>
-                <div className="relative">
-                  <Listbox.Button className="relative inline-flex items-center whitespace-nowrap rounded-full bg-gray-50 px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 sm:px-3">
-                    <CalendarIcon
-                      className={classNames(
-                        dated.value === null ? 'text-gray-300' : 'text-gray-500',
-                        'h-5 w-5 flex-shrink-0 sm:-ml-1',
-                      )}
-                      aria-hidden="true"
-                    />
-                    <span
-                      className={classNames(
-                        dated.value === null ? '' : 'text-gray-900',
-                        'hidden truncate sm:ml-2 sm:block',
-                      )}
-                    >
-                      {dated.value === null ? 'Due date' : dated.name}
-                    </span>
-                  </Listbox.Button>
-
-                  <Transition
-                    show={open}
-                    as={Fragment}
-                    leave="transition ease-in duration-100"
-                    leaveFrom="opacity-100"
-                    leaveTo="opacity-0"
-                  >
-                    <Listbox.Options className="absolute right-0 z-10 mt-1 max-h-56 w-52 overflow-auto rounded-lg bg-white py-3 text-base shadow ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                      {dueDates.map((dueDate) => (
-                        <Listbox.Option
-                          key={dueDate.value}
-                          className={({ active }) =>
-                            classNames(
-                              active ? 'bg-gray-100' : 'bg-white',
-                              'relative cursor-default select-none px-3 py-2',
-                            )
-                          }
-                          value={dueDate}
-                        >
-                          <div className="flex items-center">
-                            <span className="block truncate font-medium">{dueDate.name}</span>
-                          </div>
-                        </Listbox.Option>
-                      ))}
-                    </Listbox.Options>
-                  </Transition>
-                </div>
-              </>
-            )}
-          </Listbox>
+          <DatePicker
+            selected={messageDate}
+            onChange={(date: Date) => setStartDate(date)}
+            timeInputLabel="Time:"
+            dateFormat="dd/MM/yyyy h:mm aa"
+            showTimeInput
+            showPopperArrow={false}
+            customInput={<TimePickerButton />}
+          />
         </div>
 
         <div className="flex items-center justify-end space-x-3 border-t border-gray-200 px-2 py-2 sm:px-3">
@@ -161,7 +124,12 @@ export default function MessageBox({ selectedPerson, defaultMessageValue }: Mess
               onClick={() => {
                 sendMessage();
               }}
-              className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 "
+              className={clsx(
+                ' inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ',
+                {
+                  'opacity-30': messageDate == null,
+                },
+              )}
             >
               Create
             </button>
