@@ -17,7 +17,7 @@ export default function MessageBox({ selectedPerson }: MessageBoxProps) {
   const { setModalState, toggleModal, setSelectedPerson, message, setMessage } = useModalStore();
   const utils = api.useContext();
 
-  const addMessage = api.messages.addMessage.useMutation({
+  const addMessage = api.messages.addOne.useMutation({
     async onSuccess() {
       utils.messages.getAll.invalidate();
       toggleModal();
@@ -33,7 +33,7 @@ export default function MessageBox({ selectedPerson }: MessageBoxProps) {
       addMessage.mutateAsync({
         channel: 'WhatsApp',
         message,
-        recipient: selectedPerson.name,
+        recipient_name: selectedPerson.name,
         recipient_number: selectedPerson.phone,
         userId: 1,
       });
