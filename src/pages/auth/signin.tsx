@@ -22,12 +22,10 @@ function Signin({ providers }: InferGetServerSidePropsType<typeof getServerSideP
         <div className="mx-auto w-full max-w-sm lg:w-96">
           <div>
             <Image
-              className="h-12 w-auto"
-              width={0}
+              className="h-12 w-12"
+              width={48}
               height={48}
-              sizes="100vw"
-              style={{ width: '100%', height: 'auto' }} // optional
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+              src="https://tailwindui.com/img/logos/mark.svg"
               alt="Your Company"
             />
             <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">
