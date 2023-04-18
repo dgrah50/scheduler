@@ -1,3 +1,51 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.top-header {
+  grid-area: header;
+  padding: 20px;
+}
+.profile-section {
+  grid-area: left-sidebar;
+  padding: 20px;
+}
+.message-list {
+  grid-area: main-section;
+}
+
+.right-side-bar {
+  grid-area: right-sidebar;
+}
+.bottom-footer {
+  padding: 20px;
+  grid-area: footer;
+}
+
+.app-wrapper {
+  display: grid;
+  justify-content: center;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100vw;
+  height: 100vh;
+  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-areas: 'left-sidebar main-section right-sidebar';
+  /* 'footer  footer footer'; */
+}
+@media (max-width: 1024px) {
+  .app-wrapper {
+    grid-template-columns: 4fr;
+    grid-template-rows: 1fr 0.2fr;
+    grid-template-areas:
+      'main-section'
+      'right-sidebar';
+    /* 'footer'; */
+  }
+}
+
+body {
+  margin: 0 0 0 0;
+  background-color: rgba(249, 250, 251, 1);
+}

@@ -3,9 +3,9 @@ import { activityItems } from './index';
 
 export function ActivityFeed() {
   return (
-    <aside className="col-span-3 hidden h-full w-[350px] flex-col xl:flex">
+    <aside className="right-side-bar">
       <div className="sticky top-0 h-screen bg-gray-50 pr-4 sm:pr-6 lg:flex-shrink-0  lg:pr-8 xl:pr-0">
-        <div className="pl-6 lg:w-80">
+        <div className="pl-6 lg:w-64">
           <div className="pb-2 pt-6">
             <h2 className="text-sm font-semibold">Activity</h2>
           </div>
