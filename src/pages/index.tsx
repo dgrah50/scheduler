@@ -7,19 +7,20 @@ export default function Home() {
   return (
     <>
       {/* Background color split screen for large screens */}
-      <div className="fixed left-0 top-0 h-full w-1/2 bg-white" aria-hidden="true" />
-      <div className="fixed right-0 top-0 h-full w-1/2 bg-gray-50" aria-hidden="true" />
-      <div className="relative flex flex-col lg:h-full">
-        {/* <Navbar /> */}
-        <div className="mx-auto w-full max-w-7xl flex-grow lg:flex xl:px-8">
-          <div className="min-w-0 flex-1 bg-white lg:h-screen xl:flex">
-            <ProfileSection />
-            <MessageList />
-            <MessageComposer />
-          </div>
-          <ActivityFeed />
-        </div>
+      {/* <div className="fixed flex w-full flex-col lg:h-full"> */}
+      {/* <Navbar /> */}
+
+      {/* <div className="fixed left-0 top-0 col-span-5 h-full bg-white" aria-hidden="true" />
+      <div className="fixed right-0 top-0 col-span-5 h-full bg-gray-50" aria-hidden="true" /> */}
+
+      <div className="mx-auto flex min-h-screen max-w-7xl xl:grid xl:grid-cols-10">
+        <ProfileSection />
+        <main className="col-span-5">
+          <MessageList />
+        </main>
+        <ActivityFeed />
       </div>
+      <MessageComposer />
     </>
   );
 }
