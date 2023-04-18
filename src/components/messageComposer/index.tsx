@@ -22,8 +22,11 @@ export function MessageComposer() {
 
   const onClose = () => {
     toggleModal();
-    setMessage(null);
-    setTimeout(() => setSelectedPerson(null), 500);
+
+    setTimeout(() => {
+      setSelectedPerson(null);
+      setMessage(null);
+    }, 500);
   };
 
   return (
