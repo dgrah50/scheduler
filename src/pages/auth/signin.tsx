@@ -1,10 +1,21 @@
+import { Button } from '@/components/ui/button';
 import { InferGetServerSidePropsType } from 'next';
 import { CtxOrReq } from 'next-auth/client/_utils';
 import { signIn, getCsrfToken, getProviders, useSession } from 'next-auth/react';
-import Image from 'next/image';
+import { IoLogoDiscord, IoLogoFacebook, IoLogoGoogle } from 'react-icons/io5';
+import { IconType } from 'react-icons';
+
 // import { Discord } from 'iconoir-react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+
+const iconMap: {
+  [key: string]: IconType;
+} = {
+  Discord: IoLogoDiscord,
+  Facebook: IoLogoFacebook,
+  Google: IoLogoGoogle,
+};
 
 function Signin({ providers }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
@@ -17,18 +28,14 @@ function Signin({ providers }: InferGetServerSidePropsType<typeof getServerSideP
   }, [router, status]);
 
   return (
-    <div className="flex min-h-full">
-      <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+    <div className="flex h-screen min-h-full w-screen items-center justify-center ">
+      <div className="flex flex-1 flex-col justify-center rounded-lg border py-12 text-card-foreground shadow-sm shadow-sm sm:px-6 lg:flex-none lg:px-20 xl:px-24">
         <div className="mx-auto w-full max-w-sm lg:w-96">
           <div>
-            <Image
-              className="h-12 w-12"
-              width={48}
-              height={48}
-              src="https://tailwindui.com/img/logos/mark.svg"
-              alt="Your Company"
-            />
-            <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">
+            <h2 className="text-1xl mt-6 pb-0 text-center font-bold tracking-tight text-muted-foreground">
+              gpthbd.com
+            </h2>
+            <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-white">
               Sign in to your account
             </h2>
           </div>
@@ -36,20 +43,21 @@ function Signin({ providers }: InferGetServerSidePropsType<typeof getServerSideP
           <div className="mt-8">
             <div>
               <div>
-                <p className="text-sm font-medium leading-6 text-gray-900">Sign in with</p>
-
-                <div className="mt-2 grid grid-cols-3 gap-3">
+                <div className="text-semibold mt-2 flex justify-between  text-white">
                   {providers &&
                     Object.values(providers).map((provider) => (
                       <div key={provider.name}>
-                        <button
-                          type="button"
+                        <Button
+                          variant="outline"
+                          className="flex gap-2"
                           onClick={() => signIn(provider.id, { callbackUrl: `/` })}
-                          className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         >
+                          {iconMap[provider.name]?.({
+                            size: 16,
+                          })}
                           {provider.name}
-                          <span className="sr-only">{`Sign in with ${provider.name}`}</span>
-                        </button>
+                          <span className="sr-only ">{`Sign in with ${provider.name}`}</span>
+                        </Button>
                       </div>
                     ))}
                 </div>
@@ -57,17 +65,6 @@ function Signin({ providers }: InferGetServerSidePropsType<typeof getServerSideP
             </div>
           </div>
         </div>
-      </div>
-      <div className="relative hidden w-0 flex-1 lg:block">
-        <Image
-          className="absolute inset-0 h-full w-full object-cover"
-          width={0}
-          height={0}
-          sizes="100vw"
-          style={{ width: '100%', height: 'auto' }} // optional
-          src="https://images.unsplash.com/photo-1505904267569-f02eaeb45a4c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
-          alt=""
-        />
       </div>
     </div>
   );
