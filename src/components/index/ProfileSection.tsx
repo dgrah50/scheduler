@@ -4,9 +4,10 @@ import classNames from 'classnames';
 import { Fragment } from 'react';
 import Image from 'next/image';
 import { signOut, useSession } from 'next-auth/react';
+import Link from 'next/link';
 import { api } from '~/utils/api';
 import { ModalStateEnum, useModalStore } from '~/store/modalStore';
-import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export function ProfileSection() {
   const { data: sessionData } = useSession();
@@ -14,9 +15,9 @@ export function ProfileSection() {
   const { setModalState, toggleModal } = useModalStore();
 
   return (
-    <header className="left-sidebar hidden lg:block lg:h-full">
-      <div className="sticky top-0 h-screen bg-gray-50  sm:pl-6 lg:flex-shrink-0  lg:pl-8 xl:pr-0">
-        <div className="lg:w-64">
+    <header className="left-sidebar hidden lg:block ">
+      <div className="sticky top-0 h-screen   sm:pl-6 lg:flex-shrink-0  lg:pl-8 xl:pr-0">
+        <div className="ml-auto lg:w-64">
           <div className="w-56 py-6">
             <div className="flex items-center justify-between">
               <div className="flex-1 space-y-8">
@@ -91,23 +92,20 @@ export function ProfileSection() {
                       </Transition>
                     </Menu>
                     <div className="space-y-1">
-                      <div className="text-sm font-medium text-gray-900">
-                        {sessionData?.user.name}
-                      </div>
+                      <div className="text-sm font-medium">{sessionData?.user.name}</div>
                     </div>
                   </div>
                   {/* Action buttons */}
                   <div className="flex flex-col  xl:flex-col">
-                    <button
+                    <Button
                       onClick={() => {
                         toggleModal();
                         setModalState(ModalStateEnum.MessageBox);
                       }}
-                      type="button"
-                      className="inline-flex items-center justify-center rounded-md bg-indigo-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-azure-radiance-600 xl:w-full"
+                      className="bg-primary xl:w-full"
                     >
                       New Message
-                    </button>
+                    </Button>
                   </div>
                 </div>
                 {/* Meta info */}

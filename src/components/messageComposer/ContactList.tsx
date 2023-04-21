@@ -4,6 +4,7 @@ import { MagnifyingGlassIcon, ChevronRightIcon } from '@heroicons/react/20/solid
 import { UsersIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import classNames from 'classnames';
+import { Button } from '@/components/ui/button';
 import { Person } from '~/store/modalStore';
 import Image from 'next/image';
 import { isPerson } from './index';
@@ -36,7 +37,7 @@ export function ContactList({ onPersonClick }: ContactListProps) {
           </div>
 
           {filteredPeople.length > 0 && (
-            <Combobox.Options as="div" static hold className="flex divide-x divide-gray-100">
+            <Combobox.Options as="div" static hold className="flex divide-x">
               <>
                 <div
                   className={classNames(
@@ -49,7 +50,7 @@ export function ContactList({ onPersonClick }: ContactListProps) {
                       Recent searches
                     </h2>
                   )}
-                  <div className="-mx-2 text-sm text-gray-700">
+                  <div className="-mx-2 text-sm ">
                     {(query === '' ? recent : filteredPeople).filter(isPerson).map((person) => (
                       <Combobox.Option
                         as="div"
@@ -58,7 +59,7 @@ export function ContactList({ onPersonClick }: ContactListProps) {
                         className={({ active }) =>
                           classNames(
                             'flex cursor-default select-none items-center rounded-md p-2',
-                            active && 'bg-gray-100 text-gray-900',
+                            active && 'bg-primary text-primary-foreground',
                           )
                         }
                         onClick={() => onPersonClick(person)}
@@ -75,7 +76,7 @@ export function ContactList({ onPersonClick }: ContactListProps) {
                             <span className="ml-3 flex-auto truncate">{person.name}</span>
                             {active && (
                               <ChevronRightIcon
-                                className="ml-3 h-5 w-5 flex-none text-gray-400"
+                                className="ml-3 h-5 w-5 flex-none text-muted-foreground"
                                 aria-hidden="true"
                               />
                             )}
@@ -87,10 +88,10 @@ export function ContactList({ onPersonClick }: ContactListProps) {
 
                   {query === '' && (
                     <>
-                      <h2 className="mb-4 mt-2 text-xs font-semibold text-gray-500">
+                      <h2 className="mb-4 mt-2 text-xs font-semibold text-muted-foreground">
                         Other Contacts
                       </h2>
-                      <div className="-mx-2 text-sm text-gray-700">
+                      <div className="-mx-2 text-sm ">
                         {people
                           .filter(
                             (person) =>
@@ -106,7 +107,7 @@ export function ContactList({ onPersonClick }: ContactListProps) {
                               className={({ active }) =>
                                 classNames(
                                   'flex cursor-default select-none items-center rounded-md p-2',
-                                  active && 'bg-gray-100 text-gray-900',
+                                  active && 'bg-primary text-primary-foreground',
                                 )
                               }
                               onClick={() => onPersonClick(person)}
@@ -138,7 +139,7 @@ export function ContactList({ onPersonClick }: ContactListProps) {
 
                 <div
                   className={clsx(
-                    'hidden h-96 w-1/2 flex-none flex-col divide-y divide-gray-100 overflow-y-auto sm:flex',
+                    'hidden h-96 w-1/2 flex-none flex-col divide-y overflow-y-auto sm:flex',
                     {
                       invisible: activeOption == null,
                     },
@@ -152,20 +153,20 @@ export function ContactList({ onPersonClick }: ContactListProps) {
                       width="24"
                       height="24"
                     />
-                    <h2 className="mt-3 font-semibold text-gray-900">{activeOption?.name}</h2>
-                    <p className="text-sm leading-6 text-gray-500">{activeOption?.role}</p>
+                    <h2 className="mt-3 font-semibold ">{activeOption?.name}</h2>
+                    <p className="text-sm leading-6 text-muted-foreground">{activeOption?.role}</p>
                   </div>
                   <div className="flex flex-auto flex-col justify-between p-6">
-                    <dl className="grid grid-cols-1 gap-x-6 gap-y-3 text-sm text-gray-700">
-                      <dt className="col-end-1 font-semibold text-gray-900">Phone</dt>
+                    <dl className="grid grid-cols-1 gap-x-6 gap-y-3 text-sm ">
+                      <dt className="col-end-1 font-semibold ">Phone</dt>
                       <dd>{activeOption?.phone}</dd>
-                      <dt className="col-end-1 font-semibold text-gray-900">URL</dt>
+                      <dt className="col-end-1 font-semibold">URL</dt>
                       <dd className="truncate">
                         <a href={activeOption?.url} className="text-indigo-600 underline">
                           {activeOption?.url}
                         </a>
                       </dd>
-                      <dt className="col-end-1 font-semibold text-gray-900">Email</dt>
+                      <dt className="col-end-1 font-semibold">Email</dt>
                       <dd className="truncate">
                         <a
                           href={`mailto:${activeOption?.email}`}
@@ -175,13 +176,9 @@ export function ContactList({ onPersonClick }: ContactListProps) {
                         </a>
                       </dd>
                     </dl>
-                    <button
-                      type="button"
-                      onClick={() => activeOption != null && onPersonClick(activeOption)}
-                      className="mt-6 w-full rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
+                    <Button onClick={() => activeOption != null && onPersonClick(activeOption)}>
                       Send message
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </>
@@ -192,7 +189,7 @@ export function ContactList({ onPersonClick }: ContactListProps) {
             <div className="px-6 py-14 text-center text-sm sm:px-14">
               <UsersIcon className="mx-auto h-6 w-6 text-gray-400" aria-hidden="true" />
               <p className="mt-4 font-semibold text-gray-900">No people found</p>
-              <p className="mt-2 text-gray-500">
+              <p className="mt-2 text-muted-foreground">
                 We couldn’t find anything with that term. Please try again.
               </p>
             </div>
