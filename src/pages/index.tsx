@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>HBD-GPT - Send Birthday Messages with AI</title>
+        <title>GPT-HBD - Send Birthday Messages with AI</title>
       </Head>
       <div className="sticky top-0 flex flex-col">
         <div className="app-wrapper">
