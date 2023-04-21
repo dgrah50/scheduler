@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { Combobox } from '@headlessui/react';
 import { MagnifyingGlassIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
 import { UsersIcon } from '@heroicons/react/24/outline';
+import clsx from 'clsx';
 import classNames from 'classnames';
 import { Person } from '~/store/modalStore';
 import Image from 'next/image';
 import { isPerson } from './index';
 import { recent, people } from './mockData';
-import clsx from 'clsx';
 
 interface ContactListProps {
   onPersonClick: (value: Person) => void;
