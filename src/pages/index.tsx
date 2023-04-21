@@ -4,7 +4,7 @@ import { MessageList } from '~/components/index/MessageList';
 import { MessageComposer } from '~/components/messageComposer';
 import Head from 'next/head';
 
-export default function Home(props) {
+export default function Home() {
   return (
     <>
       <Head>
